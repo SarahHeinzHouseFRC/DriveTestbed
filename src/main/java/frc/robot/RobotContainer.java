@@ -4,12 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.DrivetrainShifter;
 // import frc.robot.subsystems.Pneumatics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -26,7 +26,7 @@ public class RobotContainer {
   int[] leftIDs = {-5, -37, -11};
   int[] rightIDs = {7, 9, 14};
   private final Drivetrain drivetrain = new Drivetrain(leftIDs, rightIDs);
-  private final DrivetrainShifter shifter = new DrivetrainShifter(0, 1);
+  private final DoubleSolenoid shifter = new DoubleSolenoid(0, 1);
 
   Joystick stick = new Joystick(0);
 
@@ -48,12 +48,12 @@ public class RobotContainer {
       drivetrain));
 
     new JoystickButton(stick, Button.kA.value)
-      .whenPressed(new InstantCommand(() -> shifter.shift(kForward), shifter))
-      .whenReleased(new InstantCommand(() -> shifter.shift(kOff), shifter));
+      .whenPressed(new InstantCommand(() -> shifter.set(kForward)))
+      .whenReleased(new InstantCommand(() -> shifter.set(kOff)));
 
     new JoystickButton(stick, Button.kB.value)
-      .whenPressed(new InstantCommand(() -> shifter.shift(kReverse), shifter))
-      .whenReleased(new InstantCommand(() -> shifter.shift(kOff), shifter));
+      .whenPressed(new InstantCommand(() -> shifter.set(kReverse)))
+      .whenReleased(new InstantCommand(() -> shifter.set(kOff)));
   }
 
   /**

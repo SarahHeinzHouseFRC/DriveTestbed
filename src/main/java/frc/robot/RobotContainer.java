@@ -6,14 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Drivetrain;
-// import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,12 +23,13 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  int[] leftIDs = {-5, -37, -11};
+  int[] leftIDs = {-5, -11, -37};
   int[] rightIDs = {7, 9, 14};
   private final Drivetrain drivetrain = new Drivetrain(leftIDs, rightIDs);
-  private final DoubleSolenoid shifter = new DoubleSolenoid(0, 1);
+  private final DoubleSolenoid shifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+  private final Intake intake = new Intake(15);
 
-  Joystick stick = new Joystick(0);
+  XboxController stick = new XboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -44,8 +45,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     drivetrain.setDefaultCommand(
-      new RunCommand(() -> drivetrain.arcadeControlDeadzoned(-stick.getRawAxis(1), stick.getRawAxis(4)), 
-      drivetrain));
+      new InstantCommand(
+        () -> drivetrain.arcadeControlDeadzoned(-stick.getLeftY(), stick.getRightX()), 
+        drivetrain));
 
     new JoystickButton(stick, Button.kA.value)
       .whenPressed(new InstantCommand(() -> shifter.set(kForward)))
@@ -54,6 +56,13 @@ public class RobotContainer {
     new JoystickButton(stick, Button.kB.value)
       .whenPressed(new InstantCommand(() -> shifter.set(kReverse)))
       .whenReleased(new InstantCommand(() -> shifter.set(kOff)));
+
+    intake.setDefaultCommand(
+      new InstantCommand(() -> intake.setPower(stick.getLeftTriggerAxis()), intake));
+
+    new JoystickButton(stick, Button.kRightBumper.value)
+      .whenPressed(new InstantCommand(() -> intake.setPower(-1), intake))
+      .whenReleased(new InstantCommand(() -> intake.setPower(0), intake));
   }
 
   /**

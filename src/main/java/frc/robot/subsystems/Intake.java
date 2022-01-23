@@ -1,14 +1,16 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+/* very basic for now, wil be expanded when we add second roller + indexing
+ */
 
 public class Intake extends SubsystemBase {
-    private CANSparkMax motor;
+    private MotorController motor;
     
-    public Intake(int id) {
-        motor = new CANSparkMax(id, MotorType.kBrushless);
+    public Intake(MotorController motor) {
+        this.motor = motor;
     }
 
     public void setPower(double power) {

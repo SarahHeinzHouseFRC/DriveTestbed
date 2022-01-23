@@ -1,28 +1,16 @@
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
 public class Drivetrain extends SubsystemBase {
-    ArrayList<TalonSRX> leftMotors = new ArrayList<TalonSRX>();
-    ArrayList<TalonSRX> rightMotors = new ArrayList<TalonSRX>();
+    MotorController leftMotors;
+    MotorController rightMotors;
 
     /** Creates a new ExampleSubsystem. */
-    public Drivetrain(int[] leftIDs, int[] rightIDs) {
-        for (int id : leftIDs) {
-            leftMotors.add(createMotorConfigured(id));
-        }
-        for (int id : rightIDs) {
-            rightMotors.add(createMotorConfigured(id));
-        }
-    }
-
-    private TalonSRX createMotorConfigured(int id) {
-        TalonSRX motor = new TalonSRX(Math.abs(id));
-        motor.setInverted(id < 0);
-        return motor;
+    public Drivetrain(MotorController leftMotors, MotorController rightMotors) {
+        this.leftMotors = leftMotors;
+        this.rightMotors = rightMotors;
     }
 
     @Override
@@ -31,12 +19,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setPower(double left, double right) {
-        for (TalonSRX motor : leftMotors) {
-            motor.set(TalonSRXControlMode.PercentOutput, left);
-        }
-        for (TalonSRX motor : rightMotors) {
-            motor.set(TalonSRXControlMode.PercentOutput, right);
-        }
+        leftMotors.set(left);
+        rightMotors.set(right);
     }
 
     public void arcadeControlDeadzoned(double power, double turn) {

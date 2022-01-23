@@ -57,7 +57,7 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(() -> shifter.set(kOff)));
 
     intake.setDefaultCommand(
-      new InstantCommand(() -> intake.setPower(stick.getLeftTriggerAxis()), intake));
+      new InstantCommand(() -> intake.setPower(stick.getRightTriggerAxis()), intake));
 
     new JoystickButton(stick, Button.kRightBumper.value)
       .whenPressed(new InstantCommand(() -> intake.setPower(-1), intake))

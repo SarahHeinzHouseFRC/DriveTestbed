@@ -23,7 +23,6 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain(Helpers.talonGroup(-5, -11, -37), Helpers.talonGroup(7, 9, 14));
   private final Intake intake = new Intake(Helpers.sparkGroup(MotorType.kBrushless, 15));
   private final DoubleSolenoid shifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
@@ -32,17 +31,13 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
+    configureBindings();
   }
   
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your command mappings. 
    */
-  private void configureButtonBindings() {
+  private void configureBindings() {
     drivetrain.setDefaultCommand(
       new InstantCommand(
         () -> drivetrain.arcadeControlDeadzoned(-stick.getLeftY(), stick.getRightX()), 
@@ -70,7 +65,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
     return null;
   }
 }

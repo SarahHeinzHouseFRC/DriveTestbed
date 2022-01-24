@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
@@ -39,7 +40,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     drivetrain.setDefaultCommand(
-      new InstantCommand(
+      new RunCommand(
         () -> drivetrain.arcadeControlDeadzoned(-stick.getLeftY(), stick.getRightX()), 
         drivetrain));
 
@@ -52,7 +53,7 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(() -> shifter.set(kOff)));
 
     intake.setDefaultCommand(
-      new InstantCommand(() -> intake.setPower(stick.getRightTriggerAxis()), intake));
+      new RunCommand(() -> intake.setPower(stick.getRightTriggerAxis()), intake));
 
     new JoystickButton(stick, Button.kRightBumper.value)
       .whenPressed(new InstantCommand(() -> intake.setPower(-1), intake))

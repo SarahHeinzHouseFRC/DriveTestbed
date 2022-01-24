@@ -14,7 +14,7 @@ public class Helpers {
             controller.setInverted(id < 0);
             controllers.add(controller);
         }
-        return new MotorControllerGroup(controllers.toArray(new WPI_TalonSRX[0]));
+        return new MotorControllerGroup(controllers.toArray(new WPI_TalonSRX[controllers.size()]));
     }
     public static MotorControllerGroup sparkGroup(MotorType type, int... ids) {
         ArrayList<CANSparkMax> controllers = new ArrayList<CANSparkMax>();
@@ -23,6 +23,6 @@ public class Helpers {
             controller.setInverted(id < 0);
             controllers.add(controller);
         }
-        return new MotorControllerGroup(controllers.toArray(new CANSparkMax[0]));
+        return new MotorControllerGroup(controllers.toArray(new CANSparkMax[controllers.size()]));
     }
 }

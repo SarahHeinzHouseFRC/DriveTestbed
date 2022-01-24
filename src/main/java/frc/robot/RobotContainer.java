@@ -56,8 +56,7 @@ public class RobotContainer {
       new RunCommand(() -> intake.setPower(stick.getRightTriggerAxis()), intake));
 
     new JoystickButton(stick, Button.kRightBumper.value)
-      .whenPressed(new InstantCommand(() -> intake.setPower(-1), intake))
-      .whenReleased(new InstantCommand(() -> intake.setPower(0), intake));
+      .whileHeld(new RunCommand(() -> intake.setPower(-1), intake));
   }
 
   /**
